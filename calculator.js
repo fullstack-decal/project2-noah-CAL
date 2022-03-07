@@ -3,23 +3,26 @@ const calc = {
     clearButton: document.querySelector("#c-button"),
     backButton: document.querySelector("#back-button"),
     display: document.querySelector(".result-screen"),
+
     displayText: () => document.querySelector(".result-screen").innerHTML,
     updateDisplay: (numString) => calc.display.innerHTML = numString,
     resetDisplay: () => calc.updateDisplay(0),
+
     addNumber: function(numString) {
-        if (this.displayText() === "0") {
+        const displayText = this.displayText();
+        if (displayText === "0") {
             this.updateDisplay(numString);
         } else {
-            this.updateDisplay(this.displayText() + numString)
+            this.updateDisplay(displayText + numString);
         }
     },
     removeNumber: function() {
-        if (this.display.innerHTML !== "0") {
-            console.log('h')
-            if (this.display.innerHTML.length > 1) {
-                this.display.innerHTML = this.display.innerHTML.slice(0, this.display.innerHTML.length - 1)
-            } else {
+        const displayText = this.displayText();
+        if (displayText !== "0") {
+            if (displayText.length <= 1) {
                 this.resetDisplay();
+            } else {
+                this.updateDisplay(displayText.slice(0, displayText.length - 1))
             }
         }
     }
