@@ -3,14 +3,14 @@ const calc = {
     clearButton: document.querySelector("#c-button"),
     backButton: document.querySelector("#back-button"),
     display: document.querySelector(".result-screen"),
-    resetDisplay: function() {
-        this.display.innerHTML = "0";
-    },
+    displayText: () => document.querySelector(".result-screen").innerHTML,
+    updateDisplay: (numString) => calc.display.innerHTML = numString,
+    resetDisplay: () => calc.updateDisplay(0),
     addNumber: function(numString) {
-        if (this.display.innerHTML === "0") {
-            this.display.innerHTML = numString;
+        if (this.displayText() === "0") {
+            this.updateDisplay(numString);
         } else {
-            this.display.innerHTML += numString;
+            this.updateDisplay(this.displayText() + numString)
         }
     },
     removeNumber: function() {
