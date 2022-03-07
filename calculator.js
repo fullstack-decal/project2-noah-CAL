@@ -5,6 +5,19 @@ const calc = {
         backButton: document.querySelector("#back-button"),
         display: document.querySelector(".result-screen"),
     },
+    calculate: {
+        currNumber: 0,
+        add: (num) => this.currNumber += num,
+        subtract: (num) => this.currNumber = Math.min(0, this.currNumber - num),
+        multiply: (num) => this.currNumber *= num,
+        divide: (num) => {
+            if (num === 0) {
+                this.currNumber = Number.POSITIVE_INFINITY
+            } else {
+                this.currNumber = Math.floor(this.currNumber / num)
+            }
+        },
+    },
     displayText: () => document.querySelector(".result-screen").innerHTML,
     updateDisplay: (numString) => calc.buttons.display.innerHTML = numString,
     resetDisplay: () => calc.updateDisplay(0),
@@ -45,40 +58,3 @@ calc.buttons.clearButton.addEventListener("click", () => {
 calc.buttons.backButton.addEventListener("click", () => {
     calc.removeNumber()
 })
-
-/* Class to represent an sequence of math expressions implemented as a singly-Linked List. */
-class Expression {
-    constructor(value, operator, tail = null) {
-        this.value = parseInt(value)
-        this.operator = operator
-        this.tail = tail
-    }
-
-    calculate(expr) {
-        if (expr === null) {
-            return 0;
-        }
-        if (expr.tail === null) {
-            return expr.value;
-        }
-        const value = expr.operate(expr.value, expr.tail.value, expr.operator)
-        expr.tail.value = value;
-        return expr.tail.calculate()
-    }
-
-    operate(num1, num2, operator) {
-        switch (operator) {
-            case '+':
-                return num1 + num2;
-            case '-':
-                return num1 - num2;
-            case 'x':
-                return num1 * num2;
-            case '/':
-                if (num2 === 0) {
-                    throw Error(`Cannot divide ${num1} by ${num2}`);
-                }
-                return Math.round(num1 / num2);
-        }
-    }
-}
