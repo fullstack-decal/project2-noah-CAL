@@ -1,13 +1,13 @@
 const calc = {
-    numpad: document.querySelectorAll(".numpad"),
-    clearButton: document.querySelector("#c-button"),
-    backButton: document.querySelector("#back-button"),
-    display: document.querySelector(".result-screen"),
-
+    buttons: {
+        numpad: document.querySelectorAll(".numpad"),
+        clearButton: document.querySelector("#c-button"),
+        backButton: document.querySelector("#back-button"),
+        display: document.querySelector(".result-screen"),
+    },
     displayText: () => document.querySelector(".result-screen").innerHTML,
-    updateDisplay: (numString) => calc.display.innerHTML = numString,
+    updateDisplay: (numString) => calc.buttons.display.innerHTML = numString,
     resetDisplay: () => calc.updateDisplay(0),
-
     addNumber: function(numString) {
         const displayText = this.displayText();
         if (displayText === "0") {
@@ -29,20 +29,19 @@ const calc = {
 }
 
 /* Add click event listeners for each button. */
-calc.numpad.forEach(button =>  {
+calc.buttons.numpad.forEach(button =>  {
+    let number = button.innerHTML;
     button.addEventListener("click", e => {
-        let number = button.innerHTML;
-        console.log(number);
         calc.addNumber(number)
     })}
 )
 
 /* Clear keyboard on C press. */
-calc.clearButton.addEventListener("click", () => {
+calc.buttons.clearButton.addEventListener("click", () => {
     calc.resetDisplay();
 })
 
 /* Remove number from display on <- press. */
-calc.backButton.addEventListener("click", () => {
+calc.buttons.backButton.addEventListener("click", () => {
     calc.removeNumber()
 })
