@@ -3,6 +3,7 @@ const calc = {
         numpad: document.querySelectorAll(".numpad"),
         clearButton: document.querySelector("#c-button"),
         backButton: document.querySelector("#back-button"),
+        calcButtons: document.querySelectorAll(".last-buttons"),
         display: document.querySelector(".result-screen"),
     },
     calculate: {
@@ -60,4 +61,9 @@ calc.buttons.clearButton.addEventListener("click", () => {
 /* Remove number from display on <- press. */
 calc.buttons.backButton.addEventListener("click", () => {
     calc.display.removeNumber()
+})
+
+calc.buttons.calcButtons.forEach(button => {
+    button.addEventListener("click", () => {
+    })
 })

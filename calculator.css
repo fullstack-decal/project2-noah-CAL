@@ -37,10 +37,10 @@
   flex-wrap: wrap-reverse;
   height: 85%;
 }
-#last-buttons {
+.last-buttons {
   background-color: #df974c;
   color: white;
 }
-#last-buttons:hover {
+.last-buttons:hover {
   background-color: #dfb07e;
 }
