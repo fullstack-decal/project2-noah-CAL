@@ -8,14 +8,20 @@ const calc = {
     },
     calculate: {
         currNumber: 0,
-        add: (num) => this.currNumber += num,
-        subtract: (num) => this.currNumber = Math.min(0, this.currNumber - num),
-        multiply: (num) => this.currNumber *= num,
+        add: (num) => {
+            calc.calculate.currNumber + num
+        },
+        subtract: (num) => {
+            calc.calculate.currNumber = Math.min(0, calc.calculate.currNumber - num)
+        },
+        multiply: (num) => {
+            calc.calculate.currNumber = calc.calculate.currNumber * num
+        },
         divide: (num) => {
             if (num === 0) {
-                this.currNumber = Number.POSITIVE_INFINITY
+                calc.calculate.currNumber = Number.POSITIVE_INFINITY
             } else {
-                this.currNumber = Math.floor(this.currNumber / num)
+                calc.calculate.currNumber = Math.floor(this.currNumber / num)
             }
         },
         resetNumber: () => this.currNumber = 0,
