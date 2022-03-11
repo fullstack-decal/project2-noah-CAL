@@ -35,47 +35,23 @@ const calc = {
         },
         calcTotal: () => {
             const history = calc.calculate.calcHistory;
-            console.log(history)
             let currOperator = null;
             let currNum = null;
             history.forEach(val => {
-                // console.log(val)
+                if (val === "÷") { 
+                    val = "/"; 
+                }
+                if (val === "x") { 
+                    val = "*"; 
+                }
                 if (currNum === null) {
                     currNum = val;
-                    console.log(currNum)
                 } else if (currOperator === null) {
-                    console.log(val)
                     currOperator = val;
                 } else if (currOperator !== "=") {
                     currNum = eval(`currNum ${currOperator} val`);
-                    console.log(`currNum ${currOperator} val`)
                     currNum, currOperator = null, null;
                 }
-                // if (currOperator !== '' && val !== '=') {
-                //     console.log(`result ${val} val`, val)
-                //     result = eval(`result ${val} val`)
-                //     currOperator = '';
-                // switch (val) {
-                //     case "+":
-                //     case "-":
-                //     case "x":
-                //         console.log(`result ${val} nextNum`);
-                //         result = eval(`result ${val} nextNum`);
-                //         console.log(eval(`result ${val} nextNum`))
-                //         break;
-                //     case "÷":
-                //         if (val === 0) {
-                //             result = Number.POSITIVE_INFINITY;
-                //         } else {
-                //             result //= val;
-                //         }
-                //         break;
-                //     case "=":
-                //         break;
-                //     default:
-                        // nextNum = val;
-                // }
-                // console.log(result)
             });
             calc.display.updateDisplay(currNum);
             calc.calculate.resetHistory();
