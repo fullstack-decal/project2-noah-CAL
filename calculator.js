@@ -10,10 +10,11 @@ const calc = {
         currNumber: 0,
         calcHistory: [],
         pushToHistory: (num, operator) => {
-            if ('+-*÷'.indexOf(operator) === -1) {
-                throw Error("Bad!")
+            console.log(`Pushing ${num} ${operator} to history`)
+            if ('+-x÷'.indexOf(operator) === -1) {
+                throw Error(`Cannot push operator ${operator} to history`)
             }
-            calc.calculator.calcHistory.push([num, operator]);
+            calc.calculate.calcHistory.push([num, operator]);
         },
         calcTotal: () => {
             let result = 0;
@@ -52,31 +53,6 @@ const calc = {
     },
 }
 
-// /* Clear keyboard on C press. */
-// calc.buttons.clearButton.addEventListener("click", () => {
-//     calc.display.resetDisplay();
-//     calc.calculate.resetNumber();
-// })
-
-// /* Remove number from display on <- press. */
-// calc.buttons.backButton.addEventListener("click", () => {
-//     calc.display.removeNumber()
-// })
-
-// /* Add click event listeners for each button. */
-// calc.buttons.numpad.forEach(button =>  {
-//     let number = button.innerHTML;
-//     button.addEventListener("click", e => {
-//         calc.display.addNumber(number)
-//     })}
-// )
-
-// calc.buttons.calcButtons.forEach(button => {
-//     button.addEventListener("click", () => {
-//         console.log(button)
-//     })
-// })
-
 document.querySelectorAll(".buttons").forEach(button => {
     button.addEventListener("click", e => {
         let clickedBtn = e.target;
@@ -91,6 +67,14 @@ document.querySelectorAll(".buttons").forEach(button => {
                     break;
                 case "←":
                     calc.display.removeNumber();
+                    break;
+                case "=":
+                    // FIXME
+                default:
+                    let currNumber = calc.display.getDisplayText();
+                    let operand = value;
+                    calc.calculate.pushToHistory(currNumber, operand);
+                    calc.display.resetDisplay();
             }
         }
     })
