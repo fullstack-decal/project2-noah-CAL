@@ -1,11 +1,7 @@
 const calc = {
-    numpad: document.querySelectorAll(".numpad"),
-    numDisplay: document.querySelector(".result-screen"),
     display: {
         getText: () => document.querySelector(".result-screen").innerHTML,
         getNumber: () => parseInt(calc.display.getText()),
-        updateDisplay: (numString) => calc.numDisplay.innerHTML = numString,
-        resetDisplay: () => calc.display.updateDisplay("0"),
         addNumber: function(numString) {
             const displayText = this.getText();
             if (displayText === "0") {
@@ -23,7 +19,9 @@ const calc = {
                     this.updateDisplay(displayText.slice(0, displayText.length - 1))
                 }
             }
-        }
+        },
+        updateDisplay: (numString) => document.querySelector(".result-screen").innerHTML = numString,
+        resetDisplay: () => calc.display.updateDisplay("0"),
     },
     calculate: {
         calcHistory: [],
@@ -38,12 +36,8 @@ const calc = {
             let currOperator = null;
             let currNum = null;
             history.forEach(val => {
-                if (val === "÷") { 
-                    val = "/"; 
-                }
-                if (val === "x") { 
-                    val = "*"; 
-                }
+                if (val === "÷") val = "/"; 
+                if (val === "x") val = "*"; 
                 if (currNum === null) {
                     currNum = val;
                 } else if (currOperator === null) {
