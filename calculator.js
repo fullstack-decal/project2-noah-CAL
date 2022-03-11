@@ -8,23 +8,23 @@ const calc = {
     },
     calculate: {
         currNumber: 0,
-        add: (num) => {
-            calc.calculate.currNumber += num
-        },
-        subtract: (num) => {
-            calc.calculate.currNumber = Math.min(0, calc.calculate.currNumber - num)
-        },
-        multiply: (num) => {
-            calc.calculate.currNumber *= num
-        },
-        divide: (num) => {
-            if (num === 0) {
-                calc.calculate.currNumber = Number.POSITIVE_INFINITY
-            } else {
-                calc.calculate.currNumber = Math.floor(this.currNumber / num)
+        calcHistory: [],
+        pushToHistory: (num, operator) => {
+            if ('+-*÷'.indexOf(operator) === -1) {
+                throw Error("Bad!")
             }
+            calc.calculator.calcHistory.push([num, operator]);
         },
-        resetNumber: () => this.currNumber = 0,
+        calcTotal: () => {
+            let result = 0;
+            const history = calcHistory;
+            history.forEach((num, operator) => {
+                console.log(num, operator);
+            })
+        },
+        resetHistory: () => {
+            calc.calculate.calcHistory = [];
+        },
     },
     display: {
         getDisplayText: () => document.querySelector(".result-screen").innerHTML,
@@ -52,58 +52,46 @@ const calc = {
     },
 }
 
-/* Add click event listeners for each button. */
-calc.buttons.numpad.forEach(button =>  {
-    let number = button.innerHTML;
+// /* Clear keyboard on C press. */
+// calc.buttons.clearButton.addEventListener("click", () => {
+//     calc.display.resetDisplay();
+//     calc.calculate.resetNumber();
+// })
+
+// /* Remove number from display on <- press. */
+// calc.buttons.backButton.addEventListener("click", () => {
+//     calc.display.removeNumber()
+// })
+
+// /* Add click event listeners for each button. */
+// calc.buttons.numpad.forEach(button =>  {
+//     let number = button.innerHTML;
+//     button.addEventListener("click", e => {
+//         calc.display.addNumber(number)
+//     })}
+// )
+
+// calc.buttons.calcButtons.forEach(button => {
+//     button.addEventListener("click", () => {
+//         console.log(button)
+//     })
+// })
+
+document.querySelectorAll(".buttons").forEach(button => {
     button.addEventListener("click", e => {
-        calc.display.addNumber(number)
-    })}
-)
-
-/* Clear keyboard on C press. */
-calc.buttons.clearButton.addEventListener("click", () => {
-    calc.display.resetDisplay();
-    calc.calculate.resetNumber();
-})
-
-/* Remove number from display on <- press. */
-calc.buttons.backButton.addEventListener("click", () => {
-    calc.display.removeNumber()
-})
-
-/* TODO - REMOVE ME */
-document.querySelectorAll("button").forEach(button => {
-    button.addEventListener("click", () => {
-        console.log(calc.calculate.currNumber)
-    })
-})
-
-calc.buttons.calcButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        const currNum = calc.display.getNumber()
-        switch (button.innerHTML) {
-            case '+':
-                calc.calculate.add(currNum)
-                break
-            case '-':
-                calc.calculate.subtract(currNum)
-                console.log('h')
-                break
-            case 'x':
-                calc.calculate.multiply(currNum)
-                break
-            case '÷':
-                calc.calculate.divide(currNum)
-                break
-            case '=':
-                //TODO FIXME
-                break
-        }
-        if (button.innerHTML === '=') {
-            calc.display.updateDisplay(calc.calculate.currNumber)
-            calc.calculate.resetNumber();
+        let clickedBtn = e.target;
+        let value = clickedBtn.innerHTML;
+        if (clickedBtn.classList.contains("numpad")) {
+            calc.display.addNumber(value);
         } else {
-            calc.display.updateDisplay(0)
+            switch (value) {
+                case "C":
+                    calc.display.resetDisplay();
+                    calc.calculate.resetHistory();
+                    break;
+                case "←":
+                    calc.display.removeNumber();
+            }
         }
     })
 })
