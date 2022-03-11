@@ -1,39 +1,13 @@
 const calc = {
-    buttons: {
-        numpad: document.querySelectorAll(".numpad"),
-        clearButton: document.querySelector("#c-button"),
-        backButton: document.querySelector("#back-button"),
-        calcButtons: document.querySelectorAll(".last-buttons"),
-        display: document.querySelector(".result-screen"),
-    },
-    calculate: {
-        currNumber: 0,
-        calcHistory: [],
-        pushToHistory: (num, operator) => {
-            console.log(`Pushing ${num} ${operator} to history`)
-            if ('+-x÷'.indexOf(operator) === -1) {
-                throw Error(`Cannot push operator ${operator} to history`)
-            }
-            calc.calculate.calcHistory.push([num, operator]);
-        },
-        calcTotal: () => {
-            let result = 0;
-            const history = calcHistory;
-            history.forEach((num, operator) => {
-                console.log(num, operator);
-            })
-        },
-        resetHistory: () => {
-            calc.calculate.calcHistory = [];
-        },
-    },
+    numpad: document.querySelectorAll(".numpad"),
+    numDisplay: document.querySelector(".result-screen"),
     display: {
-        getDisplayText: () => document.querySelector(".result-screen").innerHTML,
-        updateDisplay: (numString) => calc.buttons.display.innerHTML = numString,
-        getNumber: () => parseInt(calc.display.getDisplayText()),
-        resetDisplay: () => calc.display.updateDisplay(0),
+        getText: () => document.querySelector(".result-screen").innerHTML,
+        getNumber: () => parseInt(calc.display.getText()),
+        updateDisplay: (numString) => calc.numDisplay.innerHTML = numString,
+        resetDisplay: () => calc.display.updateDisplay("0"),
         addNumber: function(numString) {
-            const displayText = this.getDisplayText();
+            const displayText = this.getText();
             if (displayText === "0") {
                 this.updateDisplay(numString);
             } else {
@@ -41,7 +15,7 @@ const calc = {
             }
         },
         removeNumber: function() {
-            const displayText = this.getDisplayText();
+            const displayText = this.getText();
             if (displayText !== "0") {
                 if (displayText.length <= 1) {
                     this.resetDisplay();
@@ -50,6 +24,63 @@ const calc = {
                 }
             }
         }
+    },
+    calculate: {
+        calcHistory: [],
+        pushToHistory: (num, operator) => {
+            calc.calculate.calcHistory.push(num, operator);
+            if (operator === "=") {
+                calc.calculate.calcTotal();
+            }
+        },
+        calcTotal: () => {
+            const history = calc.calculate.calcHistory;
+            console.log(history)
+            let currOperator = null;
+            let currNum = null;
+            history.forEach(val => {
+                // console.log(val)
+                if (currNum === null) {
+                    currNum = val;
+                    console.log(currNum)
+                } else if (currOperator === null) {
+                    console.log(val)
+                    currOperator = val;
+                } else if (currOperator !== "=") {
+                    currNum = eval(`currNum ${currOperator} val`);
+                    console.log(`currNum ${currOperator} val`)
+                    currNum, currOperator = null, null;
+                }
+                // if (currOperator !== '' && val !== '=') {
+                //     console.log(`result ${val} val`, val)
+                //     result = eval(`result ${val} val`)
+                //     currOperator = '';
+                // switch (val) {
+                //     case "+":
+                //     case "-":
+                //     case "x":
+                //         console.log(`result ${val} nextNum`);
+                //         result = eval(`result ${val} nextNum`);
+                //         console.log(eval(`result ${val} nextNum`))
+                //         break;
+                //     case "÷":
+                //         if (val === 0) {
+                //             result = Number.POSITIVE_INFINITY;
+                //         } else {
+                //             result //= val;
+                //         }
+                //         break;
+                //     case "=":
+                //         break;
+                //     default:
+                        // nextNum = val;
+                // }
+                // console.log(result)
+            });
+            calc.display.updateDisplay(currNum);
+            calc.calculate.resetHistory();
+        },
+        resetHistory: () => calc.calculate.calcHistory = [],
     },
 }
 
@@ -68,13 +99,11 @@ document.querySelectorAll(".buttons").forEach(button => {
                 case "←":
                     calc.display.removeNumber();
                     break;
-                case "=":
-                    // FIXME
                 default:
-                    let currNumber = calc.display.getDisplayText();
+                    let currNumber = calc.display.getNumber();
                     let operand = value;
-                    calc.calculate.pushToHistory(currNumber, operand);
                     calc.display.resetDisplay();
+                    calc.calculate.pushToHistory(currNumber, operand);
             }
         }
     })
